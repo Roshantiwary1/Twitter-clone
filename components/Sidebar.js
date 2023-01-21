@@ -13,13 +13,13 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className='hidden sm:flex flex-col p-2 xl:items-start fixed h-full'>
+    <div className='hidden sm:flex flex-col p-2 lg:items-start fixed h-full xl:ml-24'>
         {/* twitter logo */}
         <div className='hoverEffect hover:bg-blue-200 p-0'>
         <Image src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png" width="50" height="50" alt="logo"></Image>
         </div>
         {/* menu */}
-        <div className='mt-4 mb-2.5 xl:items-start'>
+        <div className='mt-4 mb-2.5 '>
         <SidebarMenuItem text="Home" Icon={HomeIcon} active />
         <SidebarMenuItem text="Explore" Icon={HashtagIcon} />
         <SidebarMenuItem text="Notifications" Icon={BellIcon} />

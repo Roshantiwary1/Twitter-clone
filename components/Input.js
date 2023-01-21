@@ -3,7 +3,7 @@ import React from 'react'
 
 function Input() {
   return (
-    <div className='flex border-b border-gray-200 p-3 space-x-3'>
+    <div className='flex border-b border-gray-200 p-3 space-x-3 whitespace-nowrap'>
        <img src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mnx8fGVufDB8fHx8&w=1000&q=80" className="h-11 w-11 rounded-full cursor-pointer xl:mr-2 hover:brightness-95" alt="user"/>
        <div className='w-full divide-y divide-gray-200'>
         <div>
