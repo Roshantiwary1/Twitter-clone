@@ -60,7 +60,7 @@ function Input() {
             {selectedFile && (
               <div className="relative">
               <XIcon className='h-7 absolute right-1 top-1 text-white bg-gray-700 p-1 rounded-full cursor-pointer' onClick={()=>setSelectedFile(null)}/>
-                <img src={selectedFile} className={`${loading && "animate-pulse"}`} />
+                <Image width="500" height="600" alt="img" src={selectedFile} className={`${loading && "animate-pulse"}`} />
               </div>
             )}
         </div>
