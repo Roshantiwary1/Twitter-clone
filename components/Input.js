@@ -1,4 +1,4 @@
-import { EmojiHappyIcon, PhotographIcon } from '@heroicons/react/outline'
+import { EmojiHappyIcon, PhotographIcon, XIcon } from '@heroicons/react/outline'
 import React, { useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import  Image  from 'next/image';
@@ -11,8 +11,10 @@ function Input() {
   const {data:session} = useSession();
   const [selectedFile,setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [loading, setLoading] =useState(false);
 
   async function sendPost(){
+    setLoading(true);
     setInput('');
     const docRef = await addDoc(collection(db,"posts"),{
      id:session.user.uid,
@@ -34,7 +36,7 @@ function Input() {
       });
     }
     setSelectedFile(null);
-    
+    setLoading(false)
   };
     
   const addImageToPost = (e) => {
@@ -55,17 +57,23 @@ function Input() {
        <div className='w-full divide-y divide-gray-200'>
         <div>
             <textarea value={input} onChange={(e)=>setInput(e.target.value)} className='w-full border-none focus:ring-0 text-lg placeholder-gray-700 tracking-wide min-h-[50px] text-gray-700' rows="2" placeholder="What's Happening?"></textarea>
+            {selectedFile && (
+              <div className="relative">
+              <XIcon className='h-7 absolute right-1 top-1 text-white bg-gray-700 p-1 rounded-full cursor-pointer' onClick={()=>setSelectedFile(null)}/>
+                <img src={selectedFile} className={`${loading && "animate-pulse"}`} />
+              </div>
+            )}
         </div>
-        <div className="flex items-center pt-2.5">
+        {!loading && (<><div className="flex items-center pt-2.5">
             <div className='flex'>
             <div onClick={()=>fileInputRef.current.click()}>
                 <PhotographIcon className='h-10 w-10 hoverEffect p-2 text-sky-600 hover:bg-sky-200'/>
-                <input type="file" ref={fileInputRef} hidden onClick={addImageToPost}/>
+                <input type="file" ref={fileInputRef} hidden onChange={addImageToPost}/>
                 </div>
                 <EmojiHappyIcon className='h-10 w-10 hoverEffect p-2 text-sky-600 hover:bg-sky-200'/>
             </div>
             <button disabled={!input.trim()} onClick={sendPost} className='ml-auto bg-blue-500 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-90 disabled:opacity-50'>Tweet</button>
-        </div>
+        </div></>)}
        </div></>)}
     </div>
   )
