@@ -1,29 +1,18 @@
 import { SparklesIcon } from "@heroicons/react/outline"
 import Input from "./Input"
 import Post from "./Post"
+import { useEffect, useState } from 'react';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Feed() {
 
-  const posts=[
-    {
-      id:1,
-      name:"Roshan",
-      userName:"roshantiwary404",
-      userImg:"https://images.unsplash.com/photo-1566753323558-f4e0952af115?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mnx8fGVufDB8fHx8&w=1000&q=80",
-      img:"https://images.unsplash.com/photo-1497752531616-c3afd9760a11?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjB8fGFuaW1hbHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=600",
-      text:"wow!",
-      timestamp:"2 hours ago"
-    },
-    {
-      id:2,
-      name:"Roshan",
-      userName:"roshantiwary404",
-      userImg:"https://images.unsplash.com/photo-1566753323558-f4e0952af115?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mnx8fGVufDB8fHx8&w=1000&q=80",
-      img:"https://images.unsplash.com/photo-1603632088148-3680d7e5dda2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTl8fGFuaW1hbHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-      text:"wow!",
-      timestamp:"2 hours ago"
-    }
-  ]
+  const [posts,setPosts] = useState([]);
+
+  useEffect(()=>{
+    const unsubscribe = onSnapshot((query(collection(db,"posts"),orderBy("timestamp","desc"))) , ((snapshot)=>{setPosts(snapshot.docs)}))
+    return unsubscribe;
+  },[])
 
   return (
     <div className="xl:ml-[400px] lg:ml-[250px] border-l border-r border-gray-200 xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl">
@@ -34,8 +23,8 @@ function Feed() {
 
       <Input/>
 
-      {posts.map(post=>(
-        <Post key={post.id} post={post} />
+      {posts.map((post,idx)=>(
+        <Post key={idx} post={post} />
       ))}
       
     </div>
