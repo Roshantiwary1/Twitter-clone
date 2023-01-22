@@ -2,14 +2,16 @@ import { EmojiHappyIcon, PhotographIcon } from '@heroicons/react/outline'
 import React, { useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import  Image  from 'next/image';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { db, storage } from '../firebase';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 
 function Input() {
   const [input , setInput] =useState("")
   const {data:session} = useSession();
+  const [selectedFile,setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
-  
+
   async function sendPost(){
     setInput('');
     const docRef = await addDoc(collection(db,"posts"),{
@@ -20,19 +22,31 @@ function Input() {
      name:session.user.name,
      username:session.user.username,
     })
-  }
 
-  const addImageToPost=(e)=>{
-    const reader=new FileReader();
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
-    if(e.target.files[0]){
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      });
+    }
+    setSelectedFile(null);
+    
+  };
+    
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
 
-    reader.onload=(readerEvent)=>{
-      console.log(readerEvent.target.result);
-    }
-  }
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 whitespace-nowrap'>
