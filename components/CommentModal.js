@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atom/modalAtom";
+import { modalState, postIdState } from "../atom/ModalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import { useSession } from "next-auth/react";
@@ -18,7 +18,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Moment from "react-moment";
-import { userState } from "../atom/userAtom";
+import { userState } from "../atom/UserAtom";
 import Image from 'next/image';
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
