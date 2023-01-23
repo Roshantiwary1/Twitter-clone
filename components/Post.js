@@ -8,9 +8,12 @@ import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid"
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { deleteObject, ref } from 'firebase/storage';
+import { useRecoilState } from 'recoil';
+import { modalState, postIdState } from '../atom/ModalAtom';
 
 const Post = ({post}) => {
-    console.log(post.data())
+    const [open,setOpen] = useRecoilState(modalState)
+    const [postId,setPostId] = useRecoilState(postIdState)
     const router = useRouter();
     const {data:session} = useSession()
     const [likes,setLikes] = useState([]);
@@ -73,8 +76,12 @@ const Post = ({post}) => {
         </div>
     {/* icon */}
         <div className='flex justify-between text-gray-500 p-2'>
-            <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
-
+            <ChatIcon onClick={()=>{
+                if(!session){
+                    router.push('/auth/signin')
+                }else{
+                setOpen(!open);setPostId(post.id)}}} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
+            
             {session?.user.uid===post?.data().id && (
         <TrashIcon onClick={deletePost} className='h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100'/>
             )}
