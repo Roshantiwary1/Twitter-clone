@@ -20,9 +20,9 @@ import {
   import { useState, useEffect } from "react";
   import { deleteObject, ref } from "firebase/storage";
   import { useRecoilState } from "recoil";
-  import { modalState, postIdState } from "../atom/modalAtom";
+  import { modalState, postIdState } from "../atom/ModalAtom";
   import { useRouter } from "next/router";
-  import { userState } from "../atom/userAtom";
+  import { userState } from "../atom/UserAtom";
   import { useSession } from 'next-auth/react';
   export default function Comment({ comment, commentId, originalPostId }) {
     const [likes, setLikes] = useState([]);
