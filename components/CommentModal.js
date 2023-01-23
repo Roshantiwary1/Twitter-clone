@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
+import { useSession } from "next-auth/react";
 import {
   EmojiHappyIcon,
   PhotographIcon,
@@ -22,10 +23,11 @@ import Image from 'next/image';
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
-  const [currentUser] = useRecoilState(userState);
+  const [ ] = useRecoilState(userState);
   const [post, setPost] = useState({});
   const [input, setInput] = useState("");
   const router = useRouter();
+  const {data:session} = useSession()
 
   useEffect(() => {
     onSnapshot(doc(db, "posts", postId), (snapshot) => {
@@ -33,21 +35,21 @@ export default function CommentModal() {
     });
   }, [postId]);
 
+
   async function sendComment() {
     await addDoc(collection(db, "posts", postId, "comments"), {
       comment: input,
-      name: currentUser.name,
-      username: currentUser.username,
-      userImg: currentUser.userImg,
+      name: session.user.name,
+      username: session.user.username,
+      userImg: session.user.image,
       timestamp: serverTimestamp(),
-      userId: currentUser.uid,
+      userId: session.user.uid,
     });
 
     setOpen(false);
     setInput("");
     router.push(`/posts/${postId}`);
   }
-
   return (
     <div>
       {open && (
@@ -90,7 +92,7 @@ export default function CommentModal() {
             <div className="flex  p-3 space-x-3">
               <Image
               width="44" height="44"
-                src={currentUser?.userImg}
+                src={session?.user?.image}
                 alt="user-img"
                 className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
               />
