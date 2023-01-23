@@ -22,7 +22,6 @@ import {
   import { useRecoilState } from "recoil";
   import { modalState, postIdState } from "../atom/ModalAtom";
   import { useRouter } from "next/router";
-  import { userState } from "../atom/UserAtom";
   import { useSession } from 'next-auth/react';
   export default function Comment({ comment, commentId, originalPostId }) {
     const [likes, setLikes] = useState([]);
@@ -39,9 +38,12 @@ import {
       return unsubscribe;
     }, [ originalPostId, commentId]);
   
-    useEffect(() => {
-      setHasLiked(likes.findIndex((like) => like.id === session?.user?.uid) !== -1);
-    }, [session?.user?.uid,likes]);
+      useEffect(() => {
+        setHasLiked(
+          likes.findIndex((like) => like.id === session?.user.uid) !== -1
+        );
+      }, [likes,session?.user.uid]);
+    
   
     async function likeComment() {
       if (session) {
@@ -74,7 +76,6 @@ import {
           );
         }
       } else {
-        // signIn();
         router.push("/auth/signin");
       }
     }
@@ -139,7 +140,7 @@ import {
                 className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
               />
             </div>
-            {session.user?.uid === comment?.userId && (
+            {session?.user?.uid === comment?.userId && (
               <TrashIcon
                 onClick={deleteComment}
                 className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
