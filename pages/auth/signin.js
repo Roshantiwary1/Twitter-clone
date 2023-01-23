@@ -12,8 +12,8 @@ const signin = ({providers}) => {
       />
       <div className="">
       {Object.values(providers).map((provider)=>(
-        <>
-        <div className="flex flex-col items-center">
+       
+        <div key ={provider.name} className="flex flex-col items-center">
           <Image
           width="144"
           height="144"
@@ -31,8 +31,6 @@ const signin = ({providers}) => {
             Sign in with Google
           </button>
         </div>
- 
-        </>
       ))}
     </div>
     </div>
