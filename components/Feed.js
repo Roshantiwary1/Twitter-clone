@@ -24,7 +24,7 @@ function Feed() {
       <Input/>
 
       {posts.map((post,idx)=>(
-        <Post key={idx} post={post} />
+        <Post key={idx} id={post.id} post={post} />
       ))}
       
     </div>

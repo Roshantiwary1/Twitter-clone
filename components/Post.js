@@ -11,7 +11,7 @@ import { deleteObject, ref } from 'firebase/storage';
 import { useRecoilState } from 'recoil';
 import { modalState, postIdState } from '../atom/ModalAtom';
 
-const Post = ({post}) => {
+const Post = ({post,id}) => {
     const [open,setOpen] = useRecoilState(modalState)
     const [postId,setPostId] = useRecoilState(postIdState)
     const router = useRouter();
@@ -22,9 +22,9 @@ const Post = ({post}) => {
    const likePost = async()=>{
     if(session){
         if(hasLiked){
-        await deleteDoc(doc(db,"posts",post.id,"likes",session?.user?.uid))
+        await deleteDoc(doc(db,"posts",id,"likes",session?.user?.uid))
     }else{
-    await setDoc(doc(db,"posts",post.id,"likes",session?.user?.uid),{
+    await setDoc(doc(db,"posts",id,"likes",session?.user?.uid),{
         title:session?.user.name,
     })
 }
@@ -34,14 +34,14 @@ const Post = ({post}) => {
    }
 
    useEffect(()=>{
-    const unsubscribe=onSnapshot((collection(db,"posts",post.id,"likes")),(snapshot)=>setLikes(snapshot.docs));
+    const unsubscribe=onSnapshot((collection(db,"posts",id,"likes")),(snapshot)=>setLikes(snapshot.docs));
     return unsubscribe;
-   },[post.id])
+   },[id])
 
    useEffect(()=>{
-    const unsubscribe=onSnapshot((collection(db,"posts",post.id,"comments")),(snapshot)=>setComments(snapshot.docs));
+    const unsubscribe=onSnapshot((collection(db,"posts",id,"comments")),(snapshot)=>setComments(snapshot.docs));
     return unsubscribe;
-   },[post.id])
+   },[id])
 
    useEffect(()=>{
     setHasLiked(likes.findIndex((like)=>(like.id===session?.user.uid))!== -1 )
@@ -49,16 +49,16 @@ const Post = ({post}) => {
 
    async function deletePost(){
    if(confirm("are you sure to delete?")){
-    await deleteDoc(doc(db,"posts",post.id))
+    await deleteDoc(doc(db,"posts",id))
     if(post.data().image){
-     await deleteObject(ref(storage,`posts/${post.id}/image`))
+     await deleteObject(ref(storage,`posts/${id}/image`))
     }
    }
    }
   return (
     <div className='flex p-3 cursor-pointer border-b border-gray-200 '>
     {/* userimage    */}
-    <Image height="44" width="44" className="h-11 w-11 rounded-full cursor-pointer mr-4 mt-2 hover:brightness-95" src={post.data().userImg} alt="user" />
+    <Image height="44" width="44" className="h-11 w-11 rounded-full cursor-pointer mr-4 mt-2 hover:brightness-95" src={post?.data()?.userImg} alt="user" />
 
     {/* right */}
     <div className='flex-1'>
@@ -76,7 +76,7 @@ const Post = ({post}) => {
         <p className='text-gray-800 text-[15px] sm:text-[16px] mb-2'>{post?.data()?.text}</p>
     {/* post image */}
     <div className='flex items-center mr-8'>
-    {post.data().image && (
+    {post?.data()?.image && (
          <Image height="650" width="550" className='rounded-xl mr-2' src={post?.data()?.image} alt="" />
     )}
         </div>
@@ -87,7 +87,7 @@ const Post = ({post}) => {
                 if(!session){
                     router.push('/auth/signin')
                 }else{
-                setOpen(!open);setPostId(post.id)}}} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
+                setOpen(!open);setPostId(id)}}} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
                  <span className= "text-sky-800 text-sm">{comments.length>0 ? comments.length :""}</span>
         </div>
             
