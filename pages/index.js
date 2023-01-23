@@ -1,4 +1,4 @@
-import Sidebar from '@/components/Sidebar'
+import Sidebar from '../components/Sidebar'
 import Head from 'next/head'
 import Feed from './../components/Feed';
 import Widget from './../components/Widget';
