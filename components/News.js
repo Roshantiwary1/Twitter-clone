@@ -11,7 +11,7 @@ const News = ({article}) => {
             </div>
             <img src={article.urlToImage} className= 'rounded-xl ' width="70" height="70"  alt="" />
         </div>
-    </a>
+    </a>  
   )
 }
 

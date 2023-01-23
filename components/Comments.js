@@ -41,7 +41,7 @@ import {
   
     useEffect(() => {
       setHasLiked(likes.findIndex((like) => like.id === session?.user?.uid) !== -1);
-    }, [likes]);
+    }, [session?.user?.uid,likes]);
   
     async function likeComment() {
       if (session) {
