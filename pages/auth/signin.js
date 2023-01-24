@@ -1,6 +1,6 @@
-// import { db } from "../../firebase";
+import { db } from "../../firebase";
 import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-// import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { auth } from "../../firebase";
@@ -12,19 +12,19 @@ export default function Signin() {
       const provider = new GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       await signInWithPopup(auth, provider);
-      // const user = auth.currentUser.providerData[0];
-      // const docRef = doc(db, "users", user.uid);
-      // const docSnap = await getDoc(docRef);
-      // if (!docSnap.exists()) {
-      //   await setDoc(docRef, {
-      //     name: user.displayName,
-      //     email: user.email,
-      //     username: user.displayName.split(" ").join("").toLocaleLowerCase(),
-      //     userImg: user.photoURL,
-      //     uid: user.uid,
-      //     timestamp: serverTimestamp(),
-      //   });
-      // }
+      const user = auth.currentUser.providerData[0];
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        await setDoc(docRef, {
+          name: user.displayName,
+          email: user.email,
+          username: user.displayName.split(" ").join("").toLocaleLowerCase(),
+          userImg: user.photoURL,
+          uid: user.uid,
+          timestamp: serverTimestamp(),
+        });
+      }
       router.push("/");
     } catch (error) {
       console.log(error);
