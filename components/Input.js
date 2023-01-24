@@ -1,6 +1,8 @@
 import { EmojiHappyIcon, PhotographIcon, XIcon } from '@heroicons/react/outline'
 import React, { useRef, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
+import { signOut, getAuth } from "firebase/auth";
 import  Image  from 'next/image';
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
@@ -8,24 +10,26 @@ import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 
 function Input() {
   const [input , setInput] =useState("")
-  const {data:session} = useSession();
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [selectedFile,setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
   const [loading, setLoading] =useState(false);
+  const auth = getAuth();
 
   async function sendPost(){
     setLoading(true);
     setInput('');
     const docRef = await addDoc(collection(db,"posts"),{
-     id:session.user.uid,
+      id: currentUser.uid,
      text:input,
-     userImg:session.user.image,
+     userImg:currentUser.image,
      timestamp:serverTimestamp(),
-     name:session.user.name,
-     username:session.user.username,
+     name:currentUser.name,
+     username:currentUser.username,
     })
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    
 
     if (selectedFile) {
       await uploadString(imageRef, selectedFile, "data_url").then(async () => {
@@ -52,7 +56,7 @@ function Input() {
 
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 whitespace-nowrap'>
-       {session && (<> <Image width="44" height="44" src={session?.user?.image} className="h-11 w-11 rounded-full cursor-pointer xl:mr-2 hover:brightness-95" alt=""/>
+       {currentUser && (<> <Image width="44" height="44" src={currentUser?.userImg} className="h-11 w-11 rounded-full cursor-pointer xl:mr-2 hover:brightness-95" alt=""/>
        
        <div className='w-full divide-y divide-gray-200'>
         <div>

@@ -1,35 +1,22 @@
-import {
-    ChartBarIcon,
-    ChatIcon,
-    DotsHorizontalIcon,
-    HeartIcon,
-    ShareIcon,
-    TrashIcon,
-  } from "@heroicons/react/outline";
+import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,} from "@heroicons/react/outline";
   import Image from 'next/image';
   import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
   import Moment from "react-moment";
-  import {
-    collection,
-    deleteDoc,
-    doc,
-    onSnapshot,
-    setDoc,
-  } from "firebase/firestore";
+  import {collection,deleteDoc,doc,onSnapshot,setDoc,} from "firebase/firestore";
   import { db, storage } from "../firebase";
   import { useState, useEffect } from "react";
   import { deleteObject, ref } from "firebase/storage";
   import { useRecoilState } from "recoil";
   import { modalState, postIdState } from "../atom/ModalAtom";
   import { useRouter } from "next/router";
-  import { useSession } from 'next-auth/react';
+  import { userState } from "../atom/userAtom";
   export default function Comment({ comment, commentId, originalPostId }) {
     const [likes, setLikes] = useState([]);
     const [hasLiked, setHasLiked] = useState(false);
     const [open, setOpen] = useRecoilState(modalState);
     const [postId, setPostId] = useRecoilState(postIdState);
     const router = useRouter();
-  const {data:session} = useSession()
+    const [currentUser] = useRecoilState(userState);
     useEffect(() => {
       const unsubscribe = onSnapshot(
         collection(db, "posts", originalPostId, "comments", commentId, "likes"),
@@ -39,14 +26,12 @@ import {
     }, [ originalPostId, commentId]);
   
       useEffect(() => {
-        setHasLiked(
-          likes.findIndex((like) => like.id === session?.user.uid) !== -1
-        );
-      }, [likes,session?.user.uid]);
+        setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+      }, [likes, currentUser]);
     
   
     async function likeComment() {
-      if (session) {
+      if (currentUser) {
         if (hasLiked) {
           await deleteDoc(
             doc(
@@ -56,7 +41,7 @@ import {
               "comments",
               commentId,
               "likes",
-              session.user?.uid
+              currentUser?.uid
             )
           );
         } else {
@@ -68,10 +53,10 @@ import {
               "comments",
               commentId,
               "likes",
-              session.user?.uid
+              currentUser?.uid
             ),
             {
-              username: session?.user?.username,
+              username: currentUser?.username,
             }
           );
         }
@@ -129,10 +114,10 @@ import {
             <div className="flex items-center select-none">
               <ChatIcon
                 onClick={() => {
-                  if (!session) {
-                    // signIn();
-                    router.push("/auth/signin");
-                  } else {
+                  if (!currentUser) {
+                  // signIn();
+                  router.push("/auth/signin");
+                  }else {
                     setPostId(originalPostId);
                     setOpen(!open);
                   }
@@ -140,7 +125,7 @@ import {
                 className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
               />
             </div>
-            {session?.user?.uid === comment?.userId && (
+            {currentUser?.uid === comment?.userId && (
               <TrashIcon
                 onClick={deleteComment}
                 className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"

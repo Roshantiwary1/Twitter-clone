@@ -3,7 +3,7 @@ import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, Trash
 import Moment from 'react-moment';
 import { setDoc, doc, onSnapshot, collection, deleteDoc } from 'firebase/firestore';
 import {db, storage} from "../firebase"
-import { useSession } from 'next-auth/react';
+import { userState } from "../atom/userAtom";   
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid"
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -15,17 +15,17 @@ const Post = ({post,id}) => {
     const [open,setOpen] = useRecoilState(modalState)
     const [postId,setPostId] = useRecoilState(postIdState)
     const router = useRouter();
-    const {data:session} = useSession()
+    const [currentUser] = useRecoilState(userState);
     const [likes,setLikes] = useState([]);
     const [comments,setComments] = useState([]);
     const [hasLiked,setHasLiked] = useState(false)
    const likePost = async()=>{
-    if(session){
+    if(currentUser){
         if(hasLiked){
-        await deleteDoc(doc(db,"posts",id,"likes",session?.user?.uid))
+        await deleteDoc(doc(db,"posts",id,"likes",currentUser?.uid))
     }else{
-    await setDoc(doc(db,"posts",id,"likes",session?.user?.uid),{
-        title:session?.user.name,
+    await setDoc(doc(db,"posts",id,"likes",currentUser?.uid),{
+        title:currentUser?.name,
     })
 }
     }else{
@@ -44,8 +44,8 @@ const Post = ({post,id}) => {
    },[id])
 
    useEffect(()=>{
-    setHasLiked(likes.findIndex((like)=>(like.id===session?.user.uid))!== -1 )
-   },[likes,session?.user.uid])
+    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+  }, [likes, currentUser]);
 
    async function deletePost(){
    if(confirm("are you sure to delete?")){
@@ -84,14 +84,14 @@ const Post = ({post,id}) => {
         <div className='flex justify-between text-gray-500 p-2'>
         <div className="flex items-center">
             <ChatIcon onClick={()=>{
-                if(!session){
+                if(!currentUser){
                     router.push('/auth/signin')
                 }else{
                 setOpen(!open);setPostId(id)}}} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
                  <span className= "text-sky-800 text-sm">{comments.length>0 ? comments.length :""}</span>
         </div>
             
-            {session?.user.uid===post?.data().id && (
+            {currentUser?.uid===post?.data().id && (
         <TrashIcon onClick={deletePost} className='h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100'/>
             )}
     <div className='flex items-center'>

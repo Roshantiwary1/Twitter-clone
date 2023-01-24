@@ -1,6 +1,35 @@
-import {getProviders, signIn} from "next-auth/react"
+// import { db } from "../../firebase";
+import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 import Image from "next/image";
-const signin = ({providers}) => {
+import { auth } from "../../firebase";
+
+export default function Signin() {
+  const router = useRouter();
+  const onGoogleClick = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      await signInWithPopup(auth, provider);
+      // const user = auth.currentUser.providerData[0];
+      // const docRef = doc(db, "users", user.uid);
+      // const docSnap = await getDoc(docRef);
+      // if (!docSnap.exists()) {
+      //   await setDoc(docRef, {
+      //     name: user.displayName,
+      //     email: user.email,
+      //     username: user.displayName.split(" ").join("").toLocaleLowerCase(),
+      //     userImg: user.photoURL,
+      //     uid: user.uid,
+      //     timestamp: serverTimestamp(),
+      //   });
+      // }
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex justify-center mt-20 space-x-9">
       <Image
@@ -11,13 +40,11 @@ const signin = ({providers}) => {
         className="hidden object-cover md:w-44 md:h-80  rotate-6  md:inline-flex"
       />
       <div className="">
-      {Object.values(providers).map((provider)=>(
-       
-        <div key ={provider.name} className="flex flex-col items-center">
+      <div className="flex flex-col items-center">
           <Image
           width="144"
-          height="144"
-            className="object-cover"
+          height="60"
+            className="w-36 object-cover"
             src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"
             alt="twitter logo"
           />
@@ -25,26 +52,13 @@ const signin = ({providers}) => {
             This app is created for learning purposes
           </p>
           <button
-            onClick={()=>signIn(provider.id,{callbackUrl:"/"})}
+            onClick={onGoogleClick}
             className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
           >
             Sign in with Google
           </button>
         </div>
-      ))}
     </div>
     </div>
   )
-}
-
-export default signin
-
-export async function getServerSideProps(){
-    const providers=await getProviders();
-
-    return{
-        props:{
-            providers,
-        }
-    }
 }
