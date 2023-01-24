@@ -10,7 +10,7 @@ export default function Signin() {
   const onGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+      // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       await signInWithPopup(auth, provider);
       const user = auth.currentUser.providerData[0];
       const docRef = doc(db, "users", user.uid);
