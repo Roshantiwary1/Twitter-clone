@@ -15,7 +15,7 @@ function Feed() {
   },[])
 
   return (
-    <div className="xl:ml-[400px] lg:ml-[250px] border-l border-r border-gray-200 xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl">
+    <div className="xl:ml-[400px] lg:ml-[250px] border-l border-r border-gray-200 xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl w-[100%]">
       <div className="flex py-2 px-3 sticky z-99 bg-white top-0 border-b whitespace-nowrap border-gray-200">
         <h2 className="sm:text-lg xl:text-xl cursor-pointer font-bold">Home</h2>
         <div className="hoverEffect ml-auto flex items-center justify-center px-0 w-9 h-9"><SparklesIcon className="h-5"/></div>

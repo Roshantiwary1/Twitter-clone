@@ -56,20 +56,20 @@ const Post = ({post,id}) => {
    }
    }
   return (
-    <div className='flex p-3 cursor-pointer border-b border-gray-200 '>
+    <div className='flex p-3 cursor-pointer border-b border-gray-200 xs:p-0 '>
     {/* userimage    */}
-    <Image height="44" width="44" className="h-11 w-11 rounded-full cursor-pointer mr-4 mt-2 hover:brightness-95" src={post?.data()?.userImg} alt="user" />
+    <Image height="44" width="44" className="md:h-11 md:w-11 xs:h-8 xs:w-8 rounded-full cursor-pointer md:mr-4 mt-2 xs:mr-1 hover:brightness-95" src={post?.data()?.userImg} alt="user" />
 
     {/* right */}
     <div className='flex-1'>
     {/* header */}
     <div className='flex items-center justify-center '>
     <div className='flex sm:space-x-2 space-x-1 items-center whitespace-nowrap'>
-        <h4 className='font-bold text-[15px] sm:text-[16px] hover:underline'>{post?.data().name}</h4>
-        <span className='text-sm sm:text-[14px]'>@{post?.data().username}-</span>
-        <span className='text-sm sm:text-[14px] hover:underline'><Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></span>
+        <h4 className='font-bold text-[15px] sm:text-[16px] xs:text-[12px] hover:underline'>{post?.data().name}</h4>
+        <span className='text-sm sm:text-[14px] xs:text-[12px]'>@{post?.data().username}-</span>
+        <span className='text-sm sm:text-[14px] hover:underline xs:text-[12px]'><Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></span>
     </div>
-    <DotsHorizontalIcon className='h-10 ml-auto w-10 p-2 hoverEffect hover:bg-sky-100 hover:text-sky-500'/>
+    <DotsHorizontalIcon className='md:h-10 ml-auto md:w-10 p-2 hoverEffect hover:bg-sky-100 hover:text-sky-500 xs:h-8 xs:w-8'/>
     </div>
 
     {/* post text */}
