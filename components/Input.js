@@ -19,14 +19,14 @@ function Input() {
   async function sendPost(){
     setLoading(true);
     setInput('');
-    const docRef = await addDoc(collection(db,"posts"),{
+    const docRef = await addDoc(collection(db, "posts"), {
       id: currentUser.uid,
-     text:input,
-     userImg:currentUser.image,
-     timestamp:serverTimestamp(),
-     name:currentUser.name,
-     username:currentUser.username,
-    })
+      text: input,
+      userImg: currentUser.userImg,
+      timestamp: serverTimestamp(),
+      name: currentUser.name,
+      username: currentUser.username,
+    });
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
     
