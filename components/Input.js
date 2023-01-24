@@ -1,7 +1,7 @@
 import { EmojiHappyIcon, PhotographIcon, XIcon } from '@heroicons/react/outline'
 import React, { useRef, useState } from 'react'
 import { useRecoilState } from "recoil";
-import { userState } from "../atom/userAtom";
+import { userState } from "../atom/UserAtom";
 import { signOut, getAuth } from "firebase/auth";
 import  Image  from 'next/image';
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';

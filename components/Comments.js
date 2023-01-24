@@ -9,7 +9,7 @@ import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,}
   import { useRecoilState } from "recoil";
   import { modalState, postIdState } from "../atom/ModalAtom";
   import { useRouter } from "next/router";
-  import { userState } from "../atom/userAtom";
+  import { userState } from "../atom/UserAtom";
   export default function Comment({ comment, commentId, originalPostId }) {
     const [likes, setLikes] = useState([]);
     const [hasLiked, setHasLiked] = useState(false);

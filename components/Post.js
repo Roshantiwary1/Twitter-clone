@@ -3,7 +3,7 @@ import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, Trash
 import Moment from 'react-moment';
 import { setDoc, doc, onSnapshot, collection, deleteDoc } from 'firebase/firestore';
 import {db, storage} from "../firebase"
-import { userState } from "../atom/userAtom";   
+import { userState } from "../atom/UserAtom";   
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid"
 import { useRouter } from 'next/router';
 import Image from 'next/image';

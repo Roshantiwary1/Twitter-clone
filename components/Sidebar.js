@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useRecoilState } from "recoil";
-import { userState } from "../atom/userAtom";
+import { userState } from "../atom/UserAtom";
 import { useRouter } from 'next/router'
 import {
     BellIcon,

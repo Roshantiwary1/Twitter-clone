@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atom/ModalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
-import { userState } from "../atom/userAtom";
+import { userState } from "../atom/UserAtom";
 import {
   EmojiHappyIcon,
   PhotographIcon,
