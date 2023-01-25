@@ -59,19 +59,19 @@ export default function CommentModal() {
         <Modal
           isOpen={open}
           onRequestClose={() => setOpen(false)}
-          className={`${select?"bg-gray-200 text-gray-800":"bg-black text-white"} max-w-lg w-[90%]  absolute top-24 left-[50%] translate-x-[-50% border-2 border-gray-200 rounded-xl shadow-md`}
+          className={`${select?"bg-white text-black  border-gray-300":"bg-black text-white  border-gray-700"} max-w-lg w-[90%]  absolute top-24 left-[50%] translate-x-[-50%] border-2 rounded-xl shadow-md`}
         >
           <div className="p-1">
-            <div className="border-b border-gray-700 py-2 px-1.5">
+            <div className={`${select?"border-b border-gray-300":"border-b border-gray-800"}  py-2 px-1.5`}>
               <div
                 onClick={() => setOpen(false)}
-                className="hoverEffect w-10 h-10 flex items-center hover:bg-gray-800 justify-center"
+                className={`${select?"hover:bg-gray-200":"hover:bg-gray-800"} hoverEffect w-10 h-10 flex items-center  justify-center`}
               >
-                <XIcon className="h-[23px] text-white p-0" />
+                <XIcon className={`${select?"text-black":"text-white"} h-[23px]  p-0`} />
               </div>
             </div>
             <div className="p-2 flex items-center space-x-1 relative whitespace-nowrap">
-              <span className="w-0.5 h-full z-[-1] absolute left-7 top-11 bg-gray-300" />
+              <span className="w-0.5 h-full z-[-1] absolute xs:left-7 sm:left-9 top-11 bg-gray-300" />
               <Image
               width="44" height="44"
                 className="sm:h-11 sm:w-11 xs:h-8 xs:w-8 rounded-full sm:mr-4 xs:mr-1"
@@ -88,7 +88,7 @@ export default function CommentModal() {
                 <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
               </span>
             </div>
-            <p className="text-white text-[15px] sm:text-[16px] ml-16 mb-2">
+            <p className={`${select?"text-black":"text-white"}  text-[15px] sm:text-[16px] ml-16 mb-2`}>
               {post?.data()?.text}
             </p>
 
@@ -99,10 +99,10 @@ export default function CommentModal() {
                 alt="user-img"
                 className="sm:h-11 sm:w-11 xs:h-8 xs:w-8 rounded-full cursor-pointer hover:brightness-95"
               />
-              <div className="w-full divide-y divide-gray-700">
+              <div className={`${select?"divide-gray-300":"divide-gray-700"} w-full divide-y `}>
                 <div className="">
                   <textarea
-                    className="w-full border-gray-700 focus:ring-0 focus:ring-gray-700 sm:text-lg xs:text-sm bg-black placeholder-white tracking-wide min-h-[50px] text-white"
+                    className={`${select?"bg-white border-none text-black placeholder-black":"bg-black placeholder-white border-gray-700 text-white"} w-full  focus:ring-0 focus:ring-gray-700 sm:text-lg xs:text-sm   tracking-wide min-h-[50px] `}
                     rows="2"
                     placeholder="Tweet your reply"
                     value={input}
@@ -116,9 +116,9 @@ export default function CommentModal() {
                       className=""
                       
                     >
-                      <PhotographIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-gray-800" />
+                      <PhotographIcon className={`${select?"hover:bg-sky-200":" hover:bg-gray-800"} h-10 w-10 hoverEffect p-2 text-sky-500`} />
                     </div>
-                    <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-gray-800" />
+                    <EmojiHappyIcon className={`${select?" hover:bg-sky-200":" hover:bg-gray-800"} h-10 w-10 hoverEffect p-2 text-sky-500`} />
                   </div>
                   <button
                     onClick={sendComment}

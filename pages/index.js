@@ -21,7 +21,7 @@ export default function Home({newsResult,randomUser}) {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
         </Head>
 
-        <main className='flex min-h-screen m-auto'>
+        <main className={`${select?"bg-white text-gray-700":"bg-black text-white"} flex min-h-screen m-auto`}>
     {/* sidebar */}
      <Sidebar />
 

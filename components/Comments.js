@@ -107,13 +107,13 @@ import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,}
   
           {/* post text */}
   
-          <p className="text-white text-[15px sm:text-[16px] mb-2">
+          <p className={`${select?"text-black":"text-white"}  text-[15px sm:text-[16px] mb-2`}>
             {comment?.comment}
           </p>
   
           {/* icons */}
   
-          <div className="flex justify-between text-white p-2">
+          <div className={`${select?"text-black":"text-white"} flex justify-between  p-2`}>
             <div className="flex items-center select-none">
               <ChatIcon
                 onClick={() => {
