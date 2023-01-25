@@ -10,6 +10,7 @@ import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,}
   import { modalState, postIdState } from "../atom/ModalAtom";
   import { useRouter } from "next/router";
   import { userState } from "../atom/UserAtom";
+  import { themeState } from '../atom/ThemeAtom';
   export default function Comment({ comment, commentId, originalPostId }) {
     const [likes, setLikes] = useState([]);
     const [hasLiked, setHasLiked] = useState(false);
@@ -17,6 +18,8 @@ import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,}
     const [postId, setPostId] = useRecoilState(postIdState);
     const router = useRouter();
     const [currentUser] = useRecoilState(userState);
+    const [select] = useRecoilState(themeState)
+
     useEffect(() => {
       const unsubscribe = onSnapshot(
         collection(db, "posts", originalPostId, "comments", commentId, "likes"),
@@ -104,13 +107,13 @@ import {ChartBarIcon,ChatIcon,DotsHorizontalIcon,HeartIcon,ShareIcon,TrashIcon,}
   
           {/* post text */}
   
-          <p className="text-gray-800 text-[15px sm:text-[16px] mb-2">
+          <p className="text-white text-[15px sm:text-[16px] mb-2">
             {comment?.comment}
           </p>
   
           {/* icons */}
   
-          <div className="flex justify-between text-gray-500 p-2">
+          <div className="flex justify-between text-white p-2">
             <div className="flex items-center select-none">
               <ChatIcon
                 onClick={() => {

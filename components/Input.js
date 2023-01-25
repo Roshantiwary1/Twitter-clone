@@ -3,12 +3,15 @@ import React, { useRef, useState } from 'react'
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/UserAtom";
 import { signOut, getAuth } from "firebase/auth";
+import { themeState } from '../atom/ThemeAtom';
 import  Image  from 'next/image';
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 
 function Input() {
+  const [select] = useRecoilState(themeState)
+
   const [input , setInput] =useState("")
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [selectedFile,setSelectedFile] = useState(null);
@@ -55,15 +58,15 @@ function Input() {
   };
 
   return (
-    <div className='flex border-b border-gray-200 p-3 space-x-3 whitespace-nowrap'>
+    <div className={`${select?"border-gray-300":"border-gray-700"} flex border-b  p-3 space-x-3 whitespace-nowrap`}>
        {currentUser && (<> <Image width="44" height="44" src={currentUser?.userImg} className="h-11 w-11 rounded-full cursor-pointer xl:mr-2 hover:brightness-95" alt=""/>
        
-       <div className='w-full divide-y divide-gray-200'>
+       <div className={`${select?"divide-gray-300":"divide-gray-800"} w-full divide-y `}>
         <div>
-            <textarea value={input} onChange={(e)=>setInput(e.target.value)} className='w-full border-none focus:ring-0 text-lg placeholder-gray-700 tracking-wide min-h-[50px] text-gray-700' rows="2" placeholder="What's Happening?"></textarea>
+            <textarea value={input} onChange={(e)=>setInput(e.target.value)} className={`${select?"text-black border-none placeholder-black border-gray-300 bg-white":"text-white border-gray-900 placeholder-white bg-black"} w-full  focus:ring-0 text-lg tracking-wide min-h-[50px] `}rows="2" placeholder="What's Happening?"></textarea>
             {selectedFile && (
               <div className="relative">
-              <XIcon className='h-7 absolute right-1 top-1 text-white bg-gray-700 p-1 rounded-full cursor-pointer' onClick={()=>setSelectedFile(null)}/>
+              <XIcon className={`${select?"text-black":"text-white"} h-7 absolute right-1 top-1  bg-gray-700 p-1 rounded-full cursor-pointer`} onClick={()=>setSelectedFile(null)}/>
                 <Image width="500" height="600" alt="img" src={selectedFile} className={`${loading && "animate-pulse"}`} />
               </div>
             )}
@@ -71,12 +74,12 @@ function Input() {
         {!loading && (<><div className="flex items-center pt-2.5">
             <div className='flex'>
             <div onClick={()=>fileInputRef.current.click()}>
-                <PhotographIcon className='h-10 w-10 hoverEffect p-2 text-sky-600 hover:bg-sky-200'/>
+                <PhotographIcon className={`${select?"hover:bg-sky-200":"hover:bg-gray-700"} h-10 w-10 hoverEffect p-2 text-sky-600`}/>
                 <input type="file" ref={fileInputRef} hidden onChange={addImageToPost}/>
                 </div>
-                <EmojiHappyIcon className='h-10 w-10 hoverEffect p-2 text-sky-600 hover:bg-sky-200'/>
+                <EmojiHappyIcon className={`${select?"hover:bg-sky-200":"hover:bg-gray-700"} h-10 w-10 hoverEffect p-2 text-sky-600`}/>
             </div>
-            <button disabled={!input.trim()} onClick={sendPost} className='ml-auto bg-blue-500 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-90 disabled:opacity-50'>Tweet</button>
+            <button disabled={!input.trim()} onClick={sendPost} className={`${select?"text-black":"text-white"} ml-auto bg-blue-500  px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-90 disabled:opacity-60`}>Tweet</button>
         </div></>)}
        </div></>)}
     </div>

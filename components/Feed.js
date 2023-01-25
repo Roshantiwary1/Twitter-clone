@@ -1,9 +1,12 @@
-import { SparklesIcon } from "@heroicons/react/outline"
+
 import Input from "./Input"
 import Post from "./Post"
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
+import Radio from './Radio';
+import { themeState } from '../atom/ThemeAtom';
+import { useRecoilState } from 'recoil';
 
 function Feed() {
 
@@ -13,12 +16,13 @@ function Feed() {
     const unsubscribe = onSnapshot((query(collection(db,"posts"),orderBy("timestamp","desc"))) , ((snapshot)=>{setPosts(snapshot.docs)}))
     return unsubscribe;
   },[])
+  const [select] = useRecoilState(themeState)
 
   return (
-    <div className="xl:ml-[400px] lg:ml-[250px] border-l border-r border-gray-200 xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl w-[100%]">
-      <div className="flex py-2 px-3 sticky z-99 bg-white top-0 border-b whitespace-nowrap border-gray-200">
-        <h2 className="sm:text-lg xl:text-xl cursor-pointer font-bold">Home</h2>
-        <div className="hoverEffect ml-auto flex items-center justify-center px-0 w-9 h-9"><SparklesIcon className="h-5"/></div>
+    <div className={`${select?"border-gray-300":"border-gray-800"} xl:ml-[400px] lg:ml-[250px] border-l border-r  xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl w-[100%]`}>
+      <div className={`${select?"bg-white border-gray-300":"bg-black border-gray-700"} flex py-2 px-3 sticky z-99  top-0 border-b whitespace-nowrap `}>
+        <h2 className={`${select?"text-black":"text-white "}sm:text-lg xl:text-xl cursor-pointer font-bold`}>Home</h2>
+        <div className="ml-auto mr-7 flex items-center xs:text-sm xs:items-start justify-center w-9 h-9"><Radio/></div>
       </div>
 
       <Input/>

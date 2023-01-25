@@ -7,6 +7,7 @@ import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/UserAtom";
+import { themeState } from '../atom/ThemeAtom';
 import { useRouter } from 'next/router'
 import {
     BellIcon,
@@ -20,6 +21,8 @@ import {
    
     
     const Sidebar = () => {
+      const [select] = useRecoilState(themeState)
+
       const router = useRouter();
       const [currentUser, setCurrentUser] = useRecoilState(userState);
       console.log(currentUser);
@@ -68,14 +71,14 @@ import {
         )}
         </div>
         {/* button  */}
-        {currentUser && <button onClick={logOut} className='text-white rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline '>Logout</button>}
-        {!currentUser && <button onClick={()=>router.push("/auth/signin")} className='text-white rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline '>Signin</button>}
+        {currentUser && <button onClick={logOut} className={`${select?"text-black":"text-white "} rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline `}>Logout</button>}
+        {!currentUser && <button onClick={()=>router.push("/auth/signin")} className={`${select?"text-black":"text-white"}  rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline `}>Signin</button>}
         {/* profile */}
-       {currentUser && ( <div className='hoverEffect text-gray-700 flex items-center mt-auto '>
+       {currentUser && ( <div className={`${select?"text-black hover:bg-gray-200":"text-white hover:bg-gray-800"} hoverEffect  flex items-center mt-auto`}>
             <Image height="40" width="40"  src={currentUser?.userImg} className="rounded-full xl:mr-2" alt="user"/>
             <div className='leading-5 hidden xl:inline'>
-                <h4 className='font-bold'>{currentUser?.name}</h4>
-                <p className='text-gray-500'>@{currentUser?.username}</p>
+                <h4 className={`${select?"text-black":"text-white"} font-bold`}>{currentUser?.name}</h4>
+                <p className={`${select?"text-black":"text-white"}`}>@{currentUser?.username}</p>
             </div>
             <DotsHorizontalIcon className='h-5 xl:ml-8 hidden xl:inline'/>
         </div>)}

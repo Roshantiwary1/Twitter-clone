@@ -3,7 +3,8 @@ import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, Trash
 import Moment from 'react-moment';
 import { setDoc, doc, onSnapshot, collection, deleteDoc } from 'firebase/firestore';
 import {db, storage} from "../firebase"
-import { userState } from "../atom/UserAtom";   
+import { userState } from "../atom/UserAtom"; 
+import { themeState } from '../atom/ThemeAtom';  
 import {HeartIcon as HeartIconFilled} from "@heroicons/react/solid"
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -19,6 +20,8 @@ const Post = ({post,id}) => {
     const [likes,setLikes] = useState([]);
     const [comments,setComments] = useState([]);
     const [hasLiked,setHasLiked] = useState(false)
+    const [select] = useRecoilState(themeState)
+
    const likePost = async()=>{
     if(currentUser){
         if(hasLiked){
@@ -56,7 +59,7 @@ const Post = ({post,id}) => {
    }
    }
   return (
-    <div className='flex p-3 cursor-pointer border-b border-gray-200 xs:p-0 '>
+    <div className={`${select?"border-gray-300":"border-gray-800"} flex p-3 cursor-pointer border-b xs:p-0`}>
     {/* userimage    */}
     <Image height="44" width="44" className="md:h-11 md:w-11 xs:h-8 xs:w-8 rounded-full cursor-pointer md:mr-4 mt-2 xs:mr-1 hover:brightness-95" src={post?.data()?.userImg} alt="user" />
 
@@ -69,11 +72,11 @@ const Post = ({post,id}) => {
         <span className='text-sm sm:text-[14px] xs:text-[12px]'>@{post?.data().username}-</span>
         <span className='text-sm sm:text-[14px] hover:underline xs:text-[12px]'><Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment></span>
     </div>
-    <DotsHorizontalIcon className='md:h-10 ml-auto md:w-10 p-2 hoverEffect hover:bg-sky-100 hover:text-sky-500 xs:h-8 xs:w-8'/>
+    <DotsHorizontalIcon className='md:h-10 ml-auto md:w-10 p-2 hoverEffect hover:bg-gray-700 hover:text-sky-500 xs:h-8 xs:w-8'/>
     </div>
 
     {/* post text */}
-        <p className='text-gray-800 text-[15px] sm:text-[16px] mb-2'>{post?.data()?.text}</p>
+        <p className={`${select?"text-black":"text-white"} ' text-[15px] sm:text-[16px] mb-2`}>{post?.data()?.text}</p>
     {/* post image */}
     <div className='flex items-center mr-8'>
     {post?.data()?.image && (
@@ -81,25 +84,25 @@ const Post = ({post,id}) => {
     )}
         </div>
     {/* icon */}
-        <div className='flex justify-between text-gray-500 p-2'>
+        <div className={`${select?"text-black":"text-white"} flex justify-between p-2`}>
         <div className="flex items-center">
             <ChatIcon onClick={()=>{
                 if(!currentUser){
                     router.push('/auth/signin')
                 }else{
-                setOpen(!open);setPostId(id)}}} className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'/>
-                 <span className= "text-sky-800 text-sm">{comments.length>0 ? comments.length :""}</span>
+                setOpen(!open);setPostId(id)}}} className={`${select?"hover:bg-sky-200 hover:text-blue-500":"hover:bg-gray-700 hover:text-blue-500"} h-9 w-9 hoverEffect p-2 `}/>
+                 <span className= {`${select?"text-black ":"text-white"} "text-sm"`}>{comments.length>0 ? comments.length :""}</span>
         </div>
             
             {currentUser?.uid===post?.data().id && (
-        <TrashIcon onClick={deletePost} className='h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100'/>
+        <TrashIcon onClick={deletePost} className=' h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-200 '/>
             )}
     <div className='flex items-center'>
-    {hasLiked?(<HeartIconFilled onClick={likePost} className='text-red-600 h-9 w-9 hoverEffect p-2 hover:text-red-600 '/>):(<HeartIcon onClick={likePost} className='h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100'/>)}
+    {hasLiked?(<HeartIconFilled onClick={likePost} className='text-red-600 h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-200 '/>):(<HeartIcon onClick={likePost} className={`${select?"hover:bg-red-200":"hover:bg-gray-700"}h-9 w-9 hoverEffect p-2 hover:text-red-600  `}/>)}
     <span className={`${hasLiked && "text-red-600"} text-sm`}>{likes.length>0 ? likes.length :""}</span>
     </div>
-            <ShareIcon className='h-9 w-9 hoverEffect p-2 hover:text-blue-500 hover:bg-sky-100'/>
-            <ChartBarIcon className='h-9 w-9 hoverEffect p-2 hover:text-blue-500 hover:bg-sky-100'/>
+            <ShareIcon className={`${select?"hover:bg-sky-200 hover:text-blue-500":"hover:bg-gray-700 hover:text-blue-500"} h-9 w-9 hoverEffect p-2 `}/>
+            <ChartBarIcon className={`${select?"hover:bg-sky-200 hover:text-blue-500":"hover:bg-gray-700 hover:text-blue-500"} h-9 w-9 hoverEffect p-2 `}/>
         </div>
     </div>
     </div>
