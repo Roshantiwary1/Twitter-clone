@@ -73,8 +73,8 @@ import {
         {currentUser && <button onClick={logOut} className={`${select?"text-black":"text-white "} sm:rounded-full xs:rounded-xl bg-blue-500 sm:w-56 sm:h-12 xs:h-8 xs:w-[64px] xs:text-sm sm:font-bold shadow-md hover:brightness-90 sm:text-lg hidden xs:inline  `}>Logout</button>}
         {!currentUser && <button onClick={()=>router.push("/auth/signin")} className={`${select?"text-black":"text-white "} sm:rounded-full xs:rounded-lg bg-blue-500 sm:w-56 sm:h-12 xs:h-8 xs:w-[64px] xs:text-sm sm:font-bold shadow-md hover:brightness-90 sm:text-lg hidden xs:inline `}>Signin</button>}
         {/* profile */}
-       {currentUser && ( <div className={`${select?"text-black hover:bg-gray-200":"text-white hover:bg-gray-800"} hoverEffect  flex items-center sm:mt-auto xs:left-[6px] 
-       xs:absolut sm:static`}>
+       {currentUser && ( <div className={`${select?"text-black hover:bg-gray-200":"text-white hover:bg-gray-800"} hoverEffect  flex items-center 
+       `}>
             <Image height="40" width="40"  src={currentUser?.userImg} className="rounded-full xl:mr-2" alt="user"/>
             <div className='leading-5 hidden xl:inlinr'>
                 <h4 className={`${select?"text-black":"text-white"} font-bold`}>{currentUser.name}</h4>
