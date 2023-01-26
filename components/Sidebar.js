@@ -20,12 +20,11 @@ import {
     UserIcon,} from "@heroicons/react/outline";
    
     
-    const Sidebar = () => {
+    const Sidebar = ({clicked}) => {
       const [select] = useRecoilState(themeState)
-
+      console.log(clicked)
       const router = useRouter();
       const [currentUser, setCurrentUser] = useRecoilState(userState);
-      console.log(currentUser);
       const auth = getAuth();
       useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -52,29 +51,29 @@ import {
         setCurrentUser(null);
       }
       return (
-        <div className='hidden sm:flex flex-col p-2 lg:items-start fixed h-full xl:ml-24'>
+        <div className={`${clicked? "flex bg-slate-500 items-center top-[0] left-0 ":"xs:hidden"} sm:flex flex-col p-2  lg:items-start fixed h-full xl:ml-24`}>
         {/* twitter logo */}
-        <div className='hoverEffect hover:bg-blue-200 p-0'>
+        <div className='hoverEffect xs:hidden sm:block hover:bg-blue-200 p-0'>
         <Image onClick={()=>router.push("/")} src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png" width="50" height="50" alt="logo"></Image>
         </div>
         {/* menu */}
-        <div className='mt-4 mb-2.5 '>
+        <div className='sm:mt-4 sm:mb-2.5 xs:mb-3 xs:space-y-[14px] xs:mt-[114px] '>
         <SidebarMenuItem text="Home" Icon={HomeIcon} active />
-        <SidebarMenuItem text="Explore" Icon={HashtagIcon} />
+        <SidebarMenuItem text="Explore" Icon={HashtagIcon}/>
         {currentUser && (
-          <><SidebarMenuItem text="Notifications" Icon={BellIcon} />
+          <div className="xs:hidden sm:inline"><SidebarMenuItem text="Notifications" Icon={BellIcon} />
         <SidebarMenuItem text="Messages" Icon={InboxIcon} />
         <SidebarMenuItem text="Bookmarks" Icon={BookmarkIcon} />
         <SidebarMenuItem text="Lists" Icon={ClipboardIcon} />
         <SidebarMenuItem text="Profile" Icon={UserIcon} />
-        <SidebarMenuItem text="More" Icon={DotsCircleHorizontalIcon} /></>
+        <SidebarMenuItem text="More" Icon={DotsCircleHorizontalIcon} /></div>
         )}
         </div>
         {/* button  */}
-        {currentUser && <button onClick={logOut} className={`${select?"text-black":"text-white "} rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline `}>Logout</button>}
-        {!currentUser && <button onClick={()=>router.push("/auth/signin")} className={`${select?"text-black":"text-white"}  rounded-full bg-blue-500 w-56 h-12 font-bold shadow-md hover:brightness-90 text-lg hidden xl:inline `}>Signin</button>}
+        {currentUser && <button onClick={logOut} className={`${select?"text-black":"text-white "} sm:rounded-full xs:rounded-xl bg-blue-500 sm:w-56 sm:h-12 xs:h-8 xs:w-[64px] xs:text-sm sm:font-bold shadow-md hover:brightness-90 sm:text-lg hidden xs:inline  `}>Logout</button>}
+        {!currentUser && <button onClick={()=>router.push("/auth/signin")} className={`${select?"text-black":"text-white "} sm:rounded-full xs:rounded-lg bg-blue-500 sm:w-56 sm:h-12 xs:h-8 xs:w-[64px] xs:text-sm sm:font-bold shadow-md hover:brightness-90 sm:text-lg hidden xs:inline `}>Signin</button>}
         {/* profile */}
-       {currentUser && ( <div className={`${select?"text-black hover:bg-gray-200":"text-white hover:bg-gray-800"} hoverEffect  flex items-center mt-auto`}>
+       {currentUser && ( <div className={`${select?"text-black hover:bg-gray-200":"text-white hover:bg-gray-800"} hoverEffect  flex items-center sm:mt-auto xs:left-[6px] xs:absolute`}>
             <Image height="40" width="40"  src={currentUser?.userImg} className="rounded-full xl:mr-2" alt="user"/>
             <div className='leading-5 hidden xl:inline'>
                 <h4 className={`${select?"text-black":"text-white"} font-bold`}>{currentUser?.name}</h4>

@@ -7,6 +7,7 @@ import { db } from "../firebase";
 import Radio from './Radio';
 import { themeState } from '../atom/ThemeAtom';
 import { useRecoilState } from 'recoil';
+import Hamburger from "./Hamburger";
 
 function Feed() {
 
@@ -21,7 +22,8 @@ function Feed() {
   return (
     <div className={`${select?"border-gray-300":"border-gray-800"} xl:ml-[400px] lg:ml-[250px] border-l border-r  xl:min-w-[650px] sm:ml-[73px] flex-grow max-w-xl w-[100%]`}>
       <div className={`${select?"bg-white border-gray-300":"bg-black border-gray-700"} flex py-2 px-3 sticky z-99  top-0 border-b whitespace-nowrap `}>
-        <h2 className={`${select?"text-black":"text-white "}sm:text-lg xl:text-xl cursor-pointer font-bold`}>Home</h2>
+        <h2 className={`${select?"text-black":"text-white "}sm:text-lg xs:hidden sm:block xl:text-xl cursor-pointer font-bold`}>Home</h2>
+        <Hamburger/>
         <div className="ml-auto mr-7 flex items-center xs:text-sm xs:items-start justify-center w-9 h-9"><Radio/></div>
       </div>
 
